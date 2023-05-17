@@ -3,6 +3,7 @@ import { DefaultState, DefaultContext, ParameterizedContext } from "koa";
 import Router from "koa-router";
 import { AppDataSource } from "./data-source";
 import routesRouter from "./routes";
+import UrlRouter from "./routers/url.router";
 const port = 4000;
 
 const app: Koa<DefaultState, DefaultContext> = new Koa();
@@ -18,6 +19,7 @@ router.get(
 app.use(router.routes()).use(router.allowedMethods());
 app.use(routesRouter.routes());
 app.use(routesRouter.allowedMethods());
+app.use(UrlRouter.routes()).use(UrlRouter.allowedMethods());
 
 AppDataSource.initialize()
   .then(() => {
