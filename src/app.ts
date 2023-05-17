@@ -4,11 +4,12 @@ import Router from "koa-router";
 import { AppDataSource } from "./data-source";
 import routesRouter from "./routes";
 import UrlRouter from "./routers/url.router";
+import bodyParser from "koa-bodyparser";
 const port = 4000;
 
 const app: Koa<DefaultState, DefaultContext> = new Koa();
 const router: Router = new Router();
-
+app.use(bodyParser());
 router.get(
   "/",
   async (ctx: ParameterizedContext<DefaultState, DefaultContext>) => {
