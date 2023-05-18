@@ -1,10 +1,7 @@
 import { IsDefined, IsUrl } from "class-validator";
 
-export class CreateUrlDto {
+export class CreateUrlRandomDto {
   @IsDefined()
-  shortened_url: string;
-
   @IsUrl()
-  @IsDefined()
   url: string;
 }
