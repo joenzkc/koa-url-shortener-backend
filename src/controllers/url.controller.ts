@@ -32,6 +32,12 @@ export default class UrlController {
     const errors: ValidationError[] = await validate(urlToBeSaved);
 
     if (errors.length > 0) {
+      ctx.status = 400;
+      ctx.body = errors;
+    } else {
+      const url = await urlRepository.save(urlToBeSaved);
+      ctx.status = 201;
+      ctx.body = url;
     }
   }
 }
