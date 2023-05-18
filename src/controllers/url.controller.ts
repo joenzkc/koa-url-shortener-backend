@@ -1,6 +1,11 @@
 import { Repository } from "typeorm";
 import { Url } from "../entities/url.entity";
-import { Context } from "koa";
+import {
+  Context,
+  DefaultContext,
+  DefaultState,
+  ParameterizedContext,
+} from "koa";
 import { AppDataSource } from "../data-source";
 import { CreateUrlDto } from "../requests/create-url.request";
 import { ValidationError, validate } from "class-validator";
@@ -118,6 +123,22 @@ export default class UrlController {
         ctx.body = url;
         return;
       }
+    }
+  }
+
+  public static async redirectUrl(
+    ctx: ParameterizedContext<DefaultState, DefaultContext>
+  ) {
+    const urlRepository: Repository<Url> = AppDataSource.getRepository(Url);
+    const shortened_url = ctx.params.shortened_url;
+
+    const url = await urlRepository.findOne({ where: { shortened_url } });
+    if (!url) {
+      ctx.status = 400;
+      ctx.body = "Unable to find URL to redirect to!";
+    } else {
+      ctx.status = 200;
+      ctx.body = url;
     }
   }
 }
