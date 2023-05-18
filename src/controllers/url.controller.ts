@@ -34,6 +34,17 @@ export default class UrlController {
   }
 
   /**
+   * Retrieves all pages to generate all the pages
+   * @param ctx
+   */
+  public static async retrieveAllPages(ctx: Context): Promise<void> {
+    const urlRepository: Repository<Url> = AppDataSource.getRepository(Url);
+    const urls = await urlRepository.find();
+    ctx.status = 200;
+    ctx.body = urls;
+  }
+
+  /**
    * Provided a shortened url, give the full url
    * @param ctx
    */
@@ -106,6 +117,14 @@ export default class UrlController {
       ctx.status = 400;
       ctx.body = errors;
     } else {
+      const alreadyExists = await urlRepository.findOne({
+        where: { url: urlToBeSaved.url },
+      });
+      if (alreadyExists) {
+        ctx.status = 200;
+        ctx.body = alreadyExists;
+        return;
+      }
       while (true) {
         const randomGeneratedUrl = crypto.randomBytes(3).toString("hex");
         if (
