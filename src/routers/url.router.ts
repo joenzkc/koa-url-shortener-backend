@@ -5,7 +5,7 @@ const UrlRouter = new Router({ prefix: "/url" });
 
 UrlRouter.get("/", url.getUrl);
 UrlRouter.get("/all", url.retrieveAllPages);
-UrlRouter.get("/full", url.getFullUrl);
+UrlRouter.post("/full", url.getFullUrl);
 UrlRouter.post("/", url.createUrl);
 UrlRouter.post("/random", url.createUrlRandom);
 
