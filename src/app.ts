@@ -12,7 +12,11 @@ require("dotenv").config();
 const app: Koa<DefaultState, DefaultContext> = new Koa();
 const router: Router = new Router();
 app.use(bodyParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
 router.get(
   "/",
   async (ctx: ParameterizedContext<DefaultState, DefaultContext>) => {
@@ -23,11 +27,7 @@ router.get(
 app.use(router.routes()).use(router.allowedMethods());
 app.use(UrlRouter.routes()).use(UrlRouter.allowedMethods());
 app.use(RedirectRouter.routes()).use(RedirectRouter.allowedMethods());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-  })
-);
+
 console.log("Initializing DB...");
 AppDataSource.initialize()
   .then(() => {
