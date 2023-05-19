@@ -6,7 +6,8 @@ import UrlRouter from "./routers/url.router";
 import bodyParser from "koa-bodyparser";
 import RedirectRouter from "./routers/redirect.router";
 import cors from "@koa/cors";
-const port = 4000;
+// const port = 4000;
+require("dotenv").config();
 
 const app: Koa<DefaultState, DefaultContext> = new Koa();
 const router: Router = new Router();
@@ -25,8 +26,8 @@ app.use(RedirectRouter.routes()).use(RedirectRouter.allowedMethods());
 app.use(cors());
 AppDataSource.initialize()
   .then(() => {
-    app.listen(port).on("listening", () => {
-      console.log(`Listening on port ${port}...`);
+    app.listen(process.env.PORT).on("listening", () => {
+      console.log(`Listening on port ${process.env.PORT}...`);
     });
   })
   .catch((err) => {
