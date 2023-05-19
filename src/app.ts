@@ -23,7 +23,12 @@ router.get(
 app.use(router.routes()).use(router.allowedMethods());
 app.use(UrlRouter.routes()).use(UrlRouter.allowedMethods());
 app.use(RedirectRouter.routes()).use(RedirectRouter.allowedMethods());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+console.log("Initializing DB...");
 AppDataSource.initialize()
   .then(() => {
     app.listen(process.env.PORT).on("listening", () => {
